@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+    py:
+      stdin_open: true # docker run -i
+      tty: true        # docker run -t
+      image: working_with_db_dev
+      container_name: working_with_DB_dev
+      build:
+        ./py
+      environment:
+        - DATABASE=postgres
+        - SQL_PORT=5432
+        - SQL_HOST=localhost
+        - MODE=develop
+      depends_on:
+        - db
+      network_mode: host
+      volumes:
+        - ./py:/usr/src/app/
+    db:
+      container_name: postgres
+      image: postgres:13.3
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_USER=egor
+        - POSTGRES_PASSWORD=krasnov
+        - POSTGRES_DB=dockerHW_db
